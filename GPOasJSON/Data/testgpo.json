@@ -8,7 +8,7 @@
                 "ValueName" : "",
                 "Value" : "",
                 "Type" : "REG_SZ",
-                "Action" : "Replace",
+                "Action" : "R",
                 "Context" : "Computer"
             },
             {
@@ -16,7 +16,7 @@
                 "ValueName" : "KevinTest",
                 "Value" : "CHANGE_DOMAIN_FQDN",
                 "Type" : "REG_SZ",
-                "Action" : "Replace",
+                "Action" : "R",
                 "Context" : "Computer"
             },
             {
@@ -24,7 +24,7 @@
                 "ValueName" : "CHANGE_DOMAIN",
                 "Value" : "CHANGE_DOMAIN",
                 "Type" : "REG_SZ",
-                "Action" : "Replace",
+                "Action" : "R",
                 "Context" : "Computer"
             },
             {
@@ -32,7 +32,7 @@
                 "ValueName" : "NewKey",
                 "Value" : "testtest",
                 "Type" : "REG_SZ",
-                "Action" : "Replace",
+                "Action" : "R",
                 "Context" : "Computer"
             }
         ]

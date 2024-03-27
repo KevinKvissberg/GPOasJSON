@@ -8,7 +8,7 @@
                 "ValueName" : "OnlyOne",
                 "Value" : "1111",
                 "Type" : "REG_SZ",
-                "Action" : "Replace",
+                "Action" : "R",
                 "Context" : "Computer"
             }
         ]
