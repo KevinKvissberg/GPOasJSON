@@ -3,7 +3,7 @@ function Set-GPRegistyValuesPlus {
         # No paramaters
     )
     $jsonGPOs = @()
-    Get-ChildItem -Path ".\Data\" -Filter "*.json" | ForEach-Object {$jsonGPOs += Get-Content $_.FullName | ConvertFrom-Json}
+    Get-ChildItem -Path "$PSScriptRoot\Data\" -Filter "*.json" | ForEach-Object {$jsonGPOs += Get-Content $_.FullName | ConvertFrom-Json}
     
     # Create GPOs if they don't exist
     Write-Verbose "Creating GPOs if they don't exist."

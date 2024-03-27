@@ -1,7 +1,7 @@
 Function New-GPRegistyBackup {
     param (
         $gpoName,
-        $backupPath = ".\Data"
+        $backupPath = "$PSScriptRoot\Data"
     )
     $gpo = [xml](Get-GPOReport -ReportType Xml -Name $gpoName)
     $gpoData = @{
