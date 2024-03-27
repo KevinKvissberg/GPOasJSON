@@ -1,7 +1,7 @@
 Function New-GPRegistyBackup {
     param (
         $gpoName,
-        $backupPath = "$PSScriptRoot\Data"
+        $backupPath = "$PSScriptRoot\..\Data"
     )
     $gpo = [xml](Get-GPOReport -ReportType Xml -Name $gpoName)
     $gpoData = @{
@@ -42,4 +42,3 @@ Function New-GPRegistyBackup {
 
     $gpoData | ConvertTo-Json -Depth 100 | Format-Json | Out-File "$backupPath\$gpoName.json"
 }
-new-GPRegistyBackup "anotherGPO"

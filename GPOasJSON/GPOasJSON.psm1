@@ -1,3 +1,3 @@
-foreach ($module in (Get-ChildItem -Path $PSScriptRoot\Public -Filter *.ps1)) {
+foreach ($module in (Get-ChildItem -Path $PSScriptRoot\Private -Filter *.ps1)) {
     . $module.FullName
 }
