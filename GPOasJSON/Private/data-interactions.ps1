@@ -2,17 +2,11 @@
 .SYNOPSIS
 Get all JSON files in a directory and convert them to PowerShell objects.
 
-.DESCRIPTION
-
-
 .PARAMETER path
-Parameter description
+The path to the directory containing the JSON files.
 
 .EXAMPLE
-An example
-
-.NOTES
-General notes
+Get-JSONRegistrykeys -path "C:\Data"
 #>
 function Get-JSONRegistrykeys {
     param (
