@@ -3,36 +3,34 @@ Function New-GPRegistyBackup {
         $gpoName,
         $backupPath = "$PSScriptRoot\..\Data"
     )
+    $gpoData = @{}
     $gpo = [xml](Get-GPOReport -ReportType Xml -Name $gpoName)
-    $gpoData = @{
-        Name = $gpoName
-    }
     if ($null -ne $gpo.gpo.Computer.ExtensionData) {
-        $gpoData += @{ComputerConfiguration = @{Registry = @()}}
+        $gpoData += @{ComputerConfiguration = @()}
         foreach ($key in $gpo.gpo.Computer.ExtensionData.Extension.RegistrySettings.Registry.Properties) {
-            $registryHashTable = @{
+            $registryHashTable = [Ordered]@{
                 Key = "$($key.hive)\\$($key.key)"
                 ValueName = $key.name
                 Value = $key.value
-                Type = $key.type
+                Type = $key.type | ConvertTo-RegistryTypeString
                 Action = $key.action
                 Context = "Computer"
             }
-            $gpoData.ComputerConfiguration.Registry += $registryHashTable
+            $gpoData.ComputerConfiguration += $registryHashTable
         }
     }
     if ($null -ne $gpo.gpo.User.ExtensionData) {
-        $gpoData += @{UserConfiguration = @{Registry = @()}}
+        $gpoData += @{UserConfiguration = @()}
         foreach ($key in $gpo.gpo.User.ExtensionData.Extension.RegistrySettings.Registry.Properties) {
-            $registryHashTable = @{
+            $registryHashTable = [Ordered]@{
                 Key = "$($key.hive)\\$($key.key)"
                 ValueName = $key.name
                 Value = $key.value
-                Type = $key.type
+                Type = $key.type | ConvertTo-RegistryTypeString
                 Action = $key.action
                 Context = "User"
             }
-            $gpoData.UserConfiguration.Registry += $registryHashTable
+            $gpoData.UserConfiguration += $registryHashTable
         }
     }
     
