@@ -18,9 +18,9 @@ This function will clear all registry values in the targeted GPOs before setting
 function Set-GPRegistyValuesPlus {
     param (
         [Parameter()]
-        [System.IO.DirectoryInfo]$DataPath = "$PSScriptRoot\Data",
+        [System.IO.DirectoryInfo]$DataPath = "$PSScriptRoot\..\Data",
         [Parameter()]
-        [System.IO.DirectoryInfo]$ConfigPath = "$PSScriptRoot\Config"
+        [System.IO.DirectoryInfo]$ConfigPath = "$PSScriptRoot\..\Config\variableStrings.json"
     )
     Write-Information "Starting to update GPOs with registry values." -InformationAction Continue
     $targetGPOs = Get-JSONRegistrykeys -path $DataPath

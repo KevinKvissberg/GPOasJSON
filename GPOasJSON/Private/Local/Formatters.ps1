@@ -14,3 +14,39 @@ function Format-Json([Parameter(Mandatory, ValueFromPipeline)][String] $json) {
         $line
     }) -Join "`n"
 }
+
+<#
+.SYNOPSIS
+Converts a registry type string to a human readable string.
+
+.PARAMETER type
+The registry type string to convert.
+#>
+function ConvertTo-RegistryTypeString {
+    param (
+        [Parameter(Mandatory, ValueFromPipeline)][String] $type
+    )
+    switch ($type) {
+        "Reg_SZ" {
+            return "String"
+        }
+        "Reg_DWORD" {
+            return "DWord"
+        }
+        "Reg_QWORD" {
+            return "QWord"
+        }
+        "Reg_EXPAND_SZ" {
+            return "ExpandString"
+        }
+        "Reg_MULTI_SZ" {
+            return "MultiString"
+        }
+        "Reg_BINARY" {
+            return "Binary"
+        }
+        default {
+            return "Unknown"
+        }
+    }
+}

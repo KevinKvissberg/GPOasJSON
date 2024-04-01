@@ -1,15 +1,13 @@
 {
     "ComputerConfiguration" :
-    {
-        "Registry" : [
-            {
-                "Key" : "HKEY_LOCAL_MACHINE\\RegisteredApplications",
-                "ValueName" : "ExampleKeyName",
-                "Value" : "ValueGoesHere",
-                "Type" : "String",
-                "Action" : "R",
-                "Context" : "Computer"
-            }
-        ]
-    }
+    [
+        {
+            "Key" : "HKEY_LOCAL_MACHINE\\RegisteredApplications",
+            "ValueName" : "ExampleKeyName",
+            "Value" : "ValueGoesHere",
+            "Type" : "String",
+            "Action" : "R",
+            "Context" : "Computer"
+        }
+    ]
 }

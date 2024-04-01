@@ -11,7 +11,7 @@ Get-JSONRegistrykeys -path "C:\Data"
 function Get-JSONRegistrykeys {
     param (
         [Parameter()]
-        [System.IO.DirectoryInfo]$path = "$PSScriptRoot\Data"
+        [System.IO.DirectoryInfo]$path = "$PSScriptRoot\..\..\Data"
     )
     
     # Check if the path exists
@@ -37,10 +37,10 @@ function Get-JSONRegistrykeys {
         # Convert the JSON file to a PowerShell object
         $jsonGPO = Get-Content -Path $_.FullName | ConvertFrom-Json
         # Add the registry values to the GPOList object
-        foreach ($registry in $jsonGPO.ComputerConfiguration.Registry) {
+        foreach ($registry in $jsonGPO.ComputerConfiguration) {
             $jsonGPOs.ComputerConfiguration += [RegistryItem]$registry
         }
-        foreach ($registry in $jsonGPO.UserConfiguration.Registry) {
+        foreach ($registry in $jsonGPO.UserConfiguration) {
             $jsonGPOs.UserConfiguration += [RegistryItem]$registry
         }
 
@@ -64,7 +64,7 @@ All the properties in the JSON file that are not strings will be excluded. The R
 function Get-VariableStrings {
     param (
         [Parameter()]
-        [System.IO.DirectoryInfo]$path = "$PSScriptRoot\Config\variableStrings.json"
+        [System.IO.DirectoryInfo]$path = "$PSScriptRoot\..\..\Config\variableStrings.json"
     )
     # Check if the path exists
     Write-Verbose "Checking if the path exists: $path"
@@ -107,7 +107,7 @@ function Set-VariableStrings {
     $iterationNames = @("Key", "ValueName", "Value")
     foreach ($iterationName in $iterationNames) {
         # Iterate over all the available change strings
-        foreach ($changeString in $variableStrings.psobject.Properties.name) {
+        foreach ($changeString in ($variableStrings.psobject.Properties.name | Sort-object { $_.Length } -Descending)) {
             if ($registryItem.$iterationName -match $changeString) {
                 # Replace the string
                 Write-Verbose "Replacing string: $changeString with $($variableStrings.$changeString) in registry value: $($registryItem.Key)\$($registryItem.ValueName)"
