@@ -1,0 +1,12 @@
+{
+    "README": 
+    [
+        "Add your own custom variables here.",
+        "The value they equal will be executed as powershell code and the result will be used as the value of the variable.",
+        "The keyname is the name of the variable to replace in the registry key. The key can be a value, valuename of path in the registry key. The value is the powershell code to execute.",
+        "For example, if you set a variable to \"(Get-ADDomain).name\", the value of the variable will be the name of the domain the computer is joined to."
+    ],
+    "CHANGE_Domain" : "(Get-ADDomain).name",
+    "CHANGE_Domain_FQDN" : "(Get-ADDomain).DNSRoot",
+    "CHANGE_Domain_DistinguishedName" : "(Get-ADDomain).DistinguishedName"
+}

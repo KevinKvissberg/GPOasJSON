@@ -1,31 +1,23 @@
 function Set-GPRegistyValuesPlus {
     param (
-        # No paramaters
+        [Parameter()]
+        [System.IO.DirectoryInfo]$DataPath = "$PSScriptRoot\Data",
+        [Parameter()]
+        [System.IO.DirectoryInfo]$ConfigPath = "$PSScriptRoot\Config"
     )
     
+    $targetGPOs = Get-JSONRegistrykeys -path $DataPath
     
     # Create GPOs if they don't exist
     Write-Verbose "Creating GPOs if they don't exist."
-    $jsonGPOs.name | Where-Object {$_ -notin (Get-GPO -All).DisplayName} | ForEach-Object {
+    $targetGPOs.name | Where-Object {$_ -notin (Get-GPO -All).DisplayName} | ForEach-Object {
         Write-Output "Creating GPO: $_"
         # Create GPO
         New-GPO -Name $_ | Out-Null
     }
     
-    # Convert registry type to string
-    $typeAsString = @{
-        "REG_SZ" = "String"
-        "REG_DWORD" = "DWord"
-        "REG_BINARY" = "Binary"
-        "REG_MULTI_SZ" = "MultiString"
-    }
-    
     # Create hashtable for string replacement
-    $changeStrings = @{
-        "CHANGE_Domain" = (Get-ADDomain).name
-        "CHANGE_Domain_FQDN" = (Get-ADDomain).DNSRoot
-        "CHANGE_Domain_DistinguishedName" = (Get-ADDomain).DistinguishedName
-    }
+    $variableStrings = Get-VariableStrings -path $ConfigPath
     
     Write-Output "Starting to update GPOs with registry values."
     
