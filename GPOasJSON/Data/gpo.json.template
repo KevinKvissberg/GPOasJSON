@@ -1,5 +1,4 @@
 {
-    "Name" : "anotherGPO",
     "ComputerConfiguration" :
     {
         "Registry" : [
