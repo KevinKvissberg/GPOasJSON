@@ -1,3 +1,20 @@
+<#
+.SYNOPSIS
+Using JSON files, update GPOs with static and dynamic registry values. 
+
+.DESCRIPTION
+This function reads JSON files containing registry values and updates/creates GPOs with these values.
+Using this function the targeted GPOs will also be cleared of all registry values before the new values are set.
+
+.PARAMETER DataPath
+Folder or specific JSON file
+
+.PARAMETER ConfigPath
+Exact path to configuration file
+
+.NOTES
+This function will clear all registry values in the targeted GPOs before setting the new values!!!
+#>
 function Set-GPRegistyValuesPlus {
     param (
         [Parameter()]
