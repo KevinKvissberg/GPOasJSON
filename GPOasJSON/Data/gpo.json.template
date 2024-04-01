@@ -6,7 +6,7 @@
                 "Key" : "HKEY_LOCAL_MACHINE\\RegisteredApplications",
                 "ValueName" : "ExampleKeyName",
                 "Value" : "ValueGoesHere",
-                "Type" : "REG_SZ",
+                "Type" : "String",
                 "Action" : "R",
                 "Context" : "Computer"
             }

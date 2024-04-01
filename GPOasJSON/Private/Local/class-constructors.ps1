@@ -5,17 +5,17 @@ class RegistryItem {
 
     [string]$Value
     [ValidateSet(
-        'Reg_BINARY',
-        'Reg_SZ',
-        'Reg_DWORD',
-        'Reg_QWORD',
-        'Reg_MULTI_SZ',
-        'Reg_EXPAND_SZ'
+        'Binary',
+        'String',
+        'DWord',
+        'QWord',
+        'MultiString',
+        'ExpandString'
     )]
     [string]$Type
 
     [ValidateSet('C', 'R', 'U', 'D')]
-    [char]$Action
+    [string]$Action
 
     [ValidateSet('Computer', 'User')]
     $Context

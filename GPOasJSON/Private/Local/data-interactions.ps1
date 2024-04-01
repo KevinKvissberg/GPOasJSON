@@ -13,7 +13,9 @@ function Get-JSONRegistrykeys {
         [Parameter()]
         [System.IO.DirectoryInfo]$path = "$PSScriptRoot\Data"
     )
+    
     # Check if the path exists
+    Write-Verbose "Checking if the path exists: $path"
     if (!(Test-Path $path)) {
         throw "Path does not exist: $path"
     }
@@ -22,10 +24,13 @@ function Get-JSONRegistrykeys {
         throw "No JSON files found in path: $path"
     }
 
-    # Create a new GPOList object
-    $jsonGPOs = [GPOList]::New()
+    $allGPOs = @()
+
     # Get all JSON files in the path
     Get-ChildItem -Path $path -Filter "*.json" | ForEach-Object {
+        # Create a new GPOList object
+        $jsonGPOs = [GPOList]::New()
+        Write-Verbose "Readiong JSON file: $_ as a [RegistryItem] object"
         # Add the name of the GPO to the object
         $jsonGPOs.Name = $_.BaseName
 
@@ -38,9 +43,11 @@ function Get-JSONRegistrykeys {
         foreach ($registry in $jsonGPO.UserConfiguration.Registry) {
             $jsonGPOs.UserConfiguration += [RegistryItem]$registry
         }
+
+        $allGPOs += $jsonGPOs
     }
     
-    return $jsonGPOs
+    return $allGPOs
 }
 
 <#
@@ -59,6 +66,8 @@ function Get-VariableStrings {
         [Parameter()]
         [System.IO.DirectoryInfo]$path = "$PSScriptRoot\Config\variableStrings.json"
     )
+    # Check if the path exists
+    Write-Verbose "Checking if the path exists: $path"
     if (!(Test-Path $path -PathType Leaf)) {
         throw "Path does not exist: $path"
     }
@@ -72,10 +81,46 @@ function Get-VariableStrings {
     foreach ($command in $variableStrings.PSObject.Properties) {
         # $command.Value
         if ($command.Value -is [string]) {
+            Write-Verbose "Executing command for ($($command.Name)): $($command.Value)"
             $result = Invoke-Expression $command.Value
             $command.Value = $result
+            Write-Verbose "Result: $result"
+        }
+        else {
+            Write-Verbose "Excluding property: $($command.Name) because it is not a string."
         }
     }
 
     return $variableStrings
+}
+
+function Set-VariableStrings {
+    param (
+        $variableStrings,
+        [RegistryItem]$registryItem
+    )
+    Write-Verbose "Checking for string replacements in registry value: $($registryItem.Key)\$($registryItem.ValueName) in GPO: $($gpo.name)"
+
+    $replacedStringCount = 0
+
+    # Replace all strings in the GPOList with the variableStrings
+    $iterationNames = @("Key", "ValueName", "Value")
+    foreach ($iterationName in $iterationNames) {
+        # Iterate over all the available change strings
+        foreach ($changeString in $variableStrings.psobject.Properties.name) {
+            if ($registryItem.$iterationName -match $changeString) {
+                # Replace the string
+                Write-Verbose "Replacing string: $changeString with $($variableStrings.$changeString) in registry value: $($registryItem.Key)\$($registryItem.ValueName)"
+                $registryItem.$iterationName = $registryItem.$iterationName -ireplace $changeString, $variableStrings.$changeString
+                $replacedStringCount++
+            }
+        }
+    }
+
+    if ($replacedStringCount -gt 0) {
+        Write-Verbose "Replaced $replacedStringCount strings in registry value: $($registryItem.Key)\$($registryItem.ValueName) in GPO: $($gpo.name)"
+    }
+    else {
+        Write-Verbose "No strings replaced in registry value: $($registryItem.Key)\$($registryItem.ValueName) in GPO: $($gpo.name)"
+    }
 }
